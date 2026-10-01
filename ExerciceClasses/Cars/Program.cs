@@ -2,6 +2,7 @@
 using ExerciceClasses.BankAccount;
 using ExerciceClasses.Exercice4;
 using ExerciceClasses.Exercice5;
+using ExerciceClasses.ExerciceChambreHotel;
 Console.OutputEncoding = System.Text.Encoding.UTF8;     // Force l'encodage de la console en UTF-8
 
 while (true)
@@ -139,5 +140,92 @@ void Exercice5()
 }
 void ExerciceChambreHotel()
 {
-
+    Hotel hotel = new Hotel();
+    List<Chambre> chambresLibres = new List<Chambre>();
+    List<Chambre> chambres = new List<Chambre>();
+    chambres.Add(new Chambre("Simple", 50m, 1));
+    chambres.Add(new Chambre("Double", 80m, 2));
+    chambres.Add(new Chambre("Suite", 150m, 3));
+    chambres.Add(new Chambre("Suite", 200m, 4));
+    //chambres.Add(new Chambre("Suite", 0, 4));
+    bool vrai = true;
+    while (vrai)
+    {
+        Console.WriteLine($"Choisissez \"1\" pour ajouter une chambre\nChoisissez \"2\" pour lister les chambres\nChoisissez \"3\" " +
+                $"pour rechercher des chambres\nChoisissez \"4\" pour afficher les chambres libre en fonction des dates\nChoisissez \"5\" " +
+                $"pour annuler une réservationChoisissez \"0\" pour QUITTER");
+        int chose = int.Parse(Console.ReadLine());
+        switch (chose)
+        {
+            case 0:
+                vrai = false;
+                break;
+            case 1:
+                Console.WriteLine("Entrez le type de chambre :");
+                string type = Console.ReadLine();
+                Console.WriteLine("Entrez le prix de la chambre :");
+                decimal prix = decimal.Parse(Console.ReadLine());
+                Console.WriteLine("Entrez le nombre de lits de la chambre :");
+                int nbLits = int.Parse(Console.ReadLine());
+                chambres.Add(new Chambre(type, prix, nbLits));
+                break;
+            case 2:
+                foreach (Chambre chambre in chambres)
+                {
+                    Console.WriteLine($"Chambre n°{chambre.RoomNumber} : {chambre.Type}, {chambre.Price}€, {chambre.Capacity} lits");
+                }
+                break;
+            case 3:
+                Console.WriteLine("Entrez le type de chambre à rechercher :");
+                string typeRecherche = Console.ReadLine();
+                List<Chambre> chambresTrouvees = chambres.FindAll(c => c.Type.ToLower() == typeRecherche.ToLower());
+                if (chambresTrouvees.Count == 0)
+                {
+                    Console.WriteLine("Aucune chambre trouvée.");
+                }
+                else
+                {
+                    foreach (Chambre chambre in chambresTrouvees)
+                    {
+                        Console.WriteLine($"Chambre n°{chambre.RoomNumber} : {chambre.Type}, {chambre.Price}€, {chambre.Capacity} lits");
+                    }
+                }
+                break;
+            case 4:
+                Console.WriteLine("Entrez la date de début (format : yyyy-MM-dd) :");
+                DateOnly startDate = DateOnly.Parse(Console.ReadLine());
+                Console.WriteLine("Entrez la date de fin (format : yyyy-MM-dd) :");
+                DateOnly endDate = DateOnly.Parse(Console.ReadLine());
+                foreach (Booking booking in hotel.AllBookings)
+                {
+                    if (booking.StartDate < endDate && booking.EndDate > startDate)
+                    {
+                        foreach (Chambre chambre in booking.Rooms)
+                        {
+                            chambresLibres.RemoveAll(c => c.RoomNumber == chambre.RoomNumber);
+                        }
+                    }
+                }
+                break;
+            case 5:
+                Console.WriteLine("Entrez la date de début de la réservation à annuler (format : yyyy-MM-dd) :");
+                DateOnly startDateAnnulation = DateOnly.Parse(Console.ReadLine());
+                Console.WriteLine("Entrez la date de fin de la réservation à annuler (format : yyyy-MM-dd) :");
+                DateOnly endDateAnnulation = DateOnly.Parse(Console.ReadLine());
+                Booking bookingToRemove = hotel.AllBookings.Find(b => b.StartDate == startDateAnnulation && b.EndDate == endDateAnnulation);
+                if (bookingToRemove != null)
+                {
+                    hotel.AllBookings.Remove(bookingToRemove);
+                    Console.WriteLine("Réservation annulée avec succès.");
+                }
+                else
+                {
+                    Console.WriteLine("Aucune réservation trouvée pour les dates spécifiées.");
+                }
+                break;
+            default:
+                Console.WriteLine("Choix invalide.");
+                break;
+        }
+    }
 }

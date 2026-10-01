@@ -9,12 +9,28 @@ public class Booking
     public DateOnly EndDate { get; set; }
     public Booking (List<Chambre> rooms, DateOnly startDate, DateOnly endDate)
     {
-        Rooms = rooms;
-        if (startDate < endDate)
+        if (startDate >= endDate) throw new ArgumentException("La date de début doit être antérieure à la date de fin.");
+        foreach (Chambre chambreDemandee in rooms)
         {
-            StartDate = startDate;
-            EndDate = endDate;
+            bool chambreExiste = false;
+
+            foreach (Chambre chambreReelle in Chambre.ToutesLesChambres)
+            {
+                if (chambreDemandee.RoomNumber == chambreReelle.RoomNumber)
+                {
+                    chambreExiste = true;
+                    break; // Trouvée, on passe à la chambre suivante
+                }
+            }
+
+            // Si le tour complet est fait sans la trouver, on bloque la réservation
+            if (!chambreExiste)
+            {
+                throw new ArgumentException($"La chambre n°{chambreDemandee.RoomNumber} n'existe pas dans l'hôtel.");
+            }
         }
-        else Console.WriteLine("La date de début doit être antérieure à la date de fin.");
+        Rooms = rooms;
+        StartDate = startDate;
+        EndDate = endDate;
     }
 }
