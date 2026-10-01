@@ -2,8 +2,7 @@
 using ExerciceClasses.BankAccount;
 using ExerciceClasses.Exercice4;
 using ExerciceClasses.Exercice5;
-// Force l'encodage de la console en UTF-8
-Console.OutputEncoding = System.Text.Encoding.UTF8;
+Console.OutputEncoding = System.Text.Encoding.UTF8;     // Force l'encodage de la console en UTF-8
 
 while (true)
 {
@@ -91,12 +90,52 @@ void Exercice4()
 }
 void Exercice5()
 {
+    bool vrai = true;
     Bibliotheque bibliotheque = new Bibliotheque();
     Livre cool = new Livre("La POO pour les GROS nuls", "Adrien HUBERT", 2026);
     Livre pasCool = new Livre("La POO pour les pros", "Choquet", 2024);
     Livre salope = new Livre("J'aime sucer des queues", "Céline Lecroart", 2025);
     bibliotheque.AddBook(cool);
-    bibliotheque.DisplayBooks();
+    bibliotheque.AddBook(pasCool);
+    bibliotheque.AddBook(salope);
+    while (vrai)
+    {
+        Console.WriteLine("Choisissez \"1\" pour ajouter un livre\nChoisissez \"2\" pour afficher les livres\nChoisissez \"3\" pour supprimer un livre\nChoisissez \"4\" pour rechercher un livre\nChoisissez \"0\" pour QUITTER");
+        int choose = int.Parse(Console.ReadLine());
+        Console.WriteLine("");
+        switch (choose)
+        {
+            case 0:
+                vrai = false;
+                break;
+            case 1:
+                Console.WriteLine("Entrez le titre du livre :");
+                string titre = Console.ReadLine();
+                Console.WriteLine("Entrez l'auteur du livre :");
+                string auteur = Console.ReadLine();
+                Console.WriteLine("Entrez l'année de publication du livre :");
+                int annee = int.Parse(Console.ReadLine());
+                Livre livre = new Livre(titre, auteur, annee);
+                bibliotheque.AddBook(livre);
+                break;
+            case 2:
+                bibliotheque.DisplayBooks();
+                break;
+            case 3:
+                bibliotheque.DisplayBooks();
+                Console.WriteLine("Entrez l'ID du livre à supprimer :");
+                Guid id = Guid.Parse(Console.ReadLine());
+                bibliotheque.DeleteBook(id);
+                break;
+            case 4:
+                Console.WriteLine("Entrez le titre, l'auteur ou l'année de parution du livre à rechercher :");
+                string search = Console.ReadLine();
+                bibliotheque.SearchBook(search);
+                break;
+            default:
+                break;
+        }
+    }
 }
 void ExerciceChambreHotel()
 {

@@ -18,7 +18,16 @@ public class Bibliotheque
     {
         foreach (var book in ListeLivre)
         {
-            Console.WriteLine($"{book.Titre} {book.Auteur} {book.Annee}");
+            Console.WriteLine($"\"{book.Titre}\" - {book.Auteur.ToUpper()} sortie en {book.Annee}\tson ID est {book.Id}");
+        }
+        Console.WriteLine();
+    }
+    public void SearchBook(string search)
+    {
+        var result = ListeLivre.Where(livre => livre.Titre.Contains(search) || livre.Auteur.Contains(search) || livre.Annee.ToString().Contains(search)).ToList();
+        foreach (var book in result)
+        {
+            Console.WriteLine($"{book.Titre} {book.Auteur} {book.Annee} son ID est {book.Id}");
         }
         Console.WriteLine();
     }

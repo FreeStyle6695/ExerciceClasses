@@ -10,6 +10,7 @@ public class Livre
     public int Annee { get; set; }
     public Livre(string titre, string auteur, int annee)
     {
+        Id = Guid.NewGuid();
         Titre = titre;
         Auteur = auteur;
         Annee = annee;
