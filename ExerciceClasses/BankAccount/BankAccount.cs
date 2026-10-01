@@ -13,18 +13,19 @@ public class BankAccount
     }
     public void Deposer()
     {
-        Console.WriteLine("Combien souhaitez-vous déposer ?");
+        Console.WriteLine("\nCombien souhaitez-vous déposer ?");
         int depot = int.Parse(Console.ReadLine());
         _solde = _solde + depot;
     }
     public void Retirer ()
     {
-        Console.WriteLine("Combien souhaitez-vous retirer");
+        Console.WriteLine("\nCombien souhaitez-vous retirer");
         int retrait = int.Parse(Console.ReadLine());
         if (_solde > retrait) _solde = _solde - retrait;
+        else Console.WriteLine("\nLe solde du compte est insuffisant\n");
     }
     public void AfficherSolde()
     {
-        Console.WriteLine($"le solde du compte {AccountNumber} est de {_solde}€");
+        Console.WriteLine($"\nle solde du compte {AccountNumber} est de {_solde}€\n");
     }
 }
